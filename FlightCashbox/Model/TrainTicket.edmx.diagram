@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b1fe87da425c4be59c9f43d119dc0bf8" Name="Diagram1">
+        <EntityTypeShape EntityType="TrainTicketModel.Distance" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TrainTicketModel.Flight" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TrainTicketModel.Passenger" Width="1.5" PointX="3.75" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TrainTicketModel.RailwayCarriage" Width="1.5" PointX="1.5" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TrainTicketModel.Route" Width="1.5" PointX="3" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TrainTicketModel.Seat" Width="1.5" PointX="3.75" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TrainTicketModel.Station" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TrainTicketModel.Ticket" Width="1.5" PointX="6" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TrainTicketModel.Train" Width="1.5" PointX="1.5" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TrainTicketModel.TypeRailwayCarriage" Width="1.5" PointX="1.5" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TrainTicketModel.TypeTrain" Width="1.5" PointX="1.5" PointY="11.375" IsExpanded="true" />
+        <AssociationConnector Association="TrainTicketModel.FK_Distance_Station" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_Distance_Station1" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_Flight_Train" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_RailwayCarriage_Flight" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_Route_Flight" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_Ticket_Passenger" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_RailwayCarriage_TypeRailwayCarriage" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_Seat_RailwayCarriage" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_Route_Station" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_Ticket_Seat" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_Ticket_Station" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_Ticket_Station1" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_Ticket_Train" ManuallyRouted="false" />
+        <AssociationConnector Association="TrainTicketModel.FK_Train_TypeTrain" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

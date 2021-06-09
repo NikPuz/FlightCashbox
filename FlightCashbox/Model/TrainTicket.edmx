@@ -1,0 +1,871 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище TrainTicketModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Distance">
+          <Key>
+            <PropertyRef Name="idStation_1" />
+            <PropertyRef Name="idStation_2" />
+          </Key>
+          <Property Name="Distance" Type="int" Nullable="false" />
+          <Property Name="idStation_1" Type="int" Nullable="false" />
+          <Property Name="idStation_2" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Flight">
+          <Key>
+            <PropertyRef Name="NumFlight" />
+          </Key>
+          <Property Name="NumFlight" Type="int" Nullable="false" />
+          <Property Name="NumTrain" Type="int" Nullable="false" />
+          <Property Name="DepartureDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Passenger">
+          <Key>
+            <PropertyRef Name="idPassenger" />
+          </Key>
+          <Property Name="idPassenger" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Surname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Patronymic" Type="varchar" MaxLength="50" />
+          <Property Name="Passport" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RailwayCarriage">
+          <Key>
+            <PropertyRef Name="NumRailwayCarriage" />
+            <PropertyRef Name="NumFlight" />
+          </Key>
+          <Property Name="NumRailwayCarriage" Type="int" Nullable="false" />
+          <Property Name="NumFlight" Type="int" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Route">
+          <Key>
+            <PropertyRef Name="idStation" />
+            <PropertyRef Name="NumFlight" />
+          </Key>
+          <Property Name="idStation" Type="int" Nullable="false" />
+          <Property Name="NumFlight" Type="int" Nullable="false" />
+          <Property Name="NumberInRoute" Type="int" Nullable="false" />
+          <Property Name="StopDuration" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="Seat">
+          <Key>
+            <PropertyRef Name="NumSeat" />
+            <PropertyRef Name="NumRailwayCarriage" />
+            <PropertyRef Name="NumFlight" />
+          </Key>
+          <Property Name="NumSeat" Type="int" Nullable="false" />
+          <Property Name="NumRailwayCarriage" Type="int" Nullable="false" />
+          <Property Name="NumFlight" Type="int" Nullable="false" />
+          <Property Name="Upper" Type="bit" />
+          <Property Name="Side" Type="bit" />
+          <Property Name="Sold" Type="bit" />
+        </EntityType>
+        <EntityType Name="Station">
+          <Key>
+            <PropertyRef Name="idStation" />
+          </Key>
+          <Property Name="idStation" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="idTicket" />
+          </Key>
+          <Property Name="idTicket" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="DepartureDateTime" Type="datetime" Nullable="false" />
+          <Property Name="ArrivalDateTime" Type="datetime" Nullable="false" />
+          <Property Name="idDepartureStation" Type="int" Nullable="false" />
+          <Property Name="idArrivalStation" Type="int" Nullable="false" />
+          <Property Name="idPassenger" Type="int" Nullable="false" />
+          <Property Name="NumTrain" Type="int" Nullable="false" />
+          <Property Name="NumFlight" Type="int" Nullable="false" />
+          <Property Name="NumRailwayCarrige" Type="int" Nullable="false" />
+          <Property Name="NumSeat" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Train">
+          <Key>
+            <PropertyRef Name="NumTrain" />
+          </Key>
+          <Property Name="NumTrain" Type="int" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TypeRailwayCarriage">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NumberOfSeats" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TypeTrain">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AverageSpeed" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_Distance_Station">
+          <End Role="Station" Type="Self.Station" Multiplicity="1" />
+          <End Role="Distance" Type="Self.Distance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="idStation" />
+            </Principal>
+            <Dependent Role="Distance">
+              <PropertyRef Name="idStation_1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Distance_Station1">
+          <End Role="Station" Type="Self.Station" Multiplicity="1" />
+          <End Role="Distance" Type="Self.Distance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="idStation" />
+            </Principal>
+            <Dependent Role="Distance">
+              <PropertyRef Name="idStation_2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flight_Train">
+          <End Role="Train" Type="Self.Train" Multiplicity="1" />
+          <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Train">
+              <PropertyRef Name="NumTrain" />
+            </Principal>
+            <Dependent Role="Flight">
+              <PropertyRef Name="NumTrain" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RailwayCarriage_Flight">
+          <End Role="Flight" Type="Self.Flight" Multiplicity="1" />
+          <End Role="RailwayCarriage" Type="Self.RailwayCarriage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flight">
+              <PropertyRef Name="NumFlight" />
+            </Principal>
+            <Dependent Role="RailwayCarriage">
+              <PropertyRef Name="NumFlight" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RailwayCarriage_TypeRailwayCarriage">
+          <End Role="TypeRailwayCarriage" Type="Self.TypeRailwayCarriage" Multiplicity="1" />
+          <End Role="RailwayCarriage" Type="Self.RailwayCarriage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeRailwayCarriage">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="RailwayCarriage">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Route_Flight">
+          <End Role="Flight" Type="Self.Flight" Multiplicity="1" />
+          <End Role="Route" Type="Self.Route" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flight">
+              <PropertyRef Name="NumFlight" />
+            </Principal>
+            <Dependent Role="Route">
+              <PropertyRef Name="NumFlight" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Route_Station">
+          <End Role="Station" Type="Self.Station" Multiplicity="1" />
+          <End Role="Route" Type="Self.Route" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="idStation" />
+            </Principal>
+            <Dependent Role="Route">
+              <PropertyRef Name="idStation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seat_RailwayCarriage">
+          <End Role="RailwayCarriage" Type="Self.RailwayCarriage" Multiplicity="1" />
+          <End Role="Seat" Type="Self.Seat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RailwayCarriage">
+              <PropertyRef Name="NumRailwayCarriage" />
+              <PropertyRef Name="NumFlight" />
+            </Principal>
+            <Dependent Role="Seat">
+              <PropertyRef Name="NumRailwayCarriage" />
+              <PropertyRef Name="NumFlight" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Passenger">
+          <End Role="Passenger" Type="Self.Passenger" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Passenger">
+              <PropertyRef Name="idPassenger" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="idPassenger" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Seat">
+          <End Role="Seat" Type="Self.Seat" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seat">
+              <PropertyRef Name="NumSeat" />
+              <PropertyRef Name="NumRailwayCarriage" />
+              <PropertyRef Name="NumFlight" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="NumSeat" />
+              <PropertyRef Name="NumRailwayCarrige" />
+              <PropertyRef Name="NumFlight" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Station">
+          <End Role="Station" Type="Self.Station" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="idStation" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="idDepartureStation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Station1">
+          <End Role="Station" Type="Self.Station" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="idStation" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="idArrivalStation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Train">
+          <End Role="Train" Type="Self.Train" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Train">
+              <PropertyRef Name="NumTrain" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="NumTrain" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Train_TypeTrain">
+          <End Role="TypeTrain" Type="Self.TypeTrain" Multiplicity="1" />
+          <End Role="Train" Type="Self.Train" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeTrain">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Train">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище TrainTicketModelContainer">
+          <EntitySet Name="Distance" EntityType="Self.Distance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Flight" EntityType="Self.Flight" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Passenger" EntityType="Self.Passenger" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RailwayCarriage" EntityType="Self.RailwayCarriage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Route" EntityType="Self.Route" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Seat" EntityType="Self.Seat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Station" EntityType="Self.Station" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ticket" EntityType="Self.Ticket" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Train" EntityType="Self.Train" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypeRailwayCarriage" EntityType="Self.TypeRailwayCarriage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypeTrain" EntityType="Self.TypeTrain" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Distance_Station" Association="Self.FK_Distance_Station">
+            <End Role="Station" EntitySet="Station" />
+            <End Role="Distance" EntitySet="Distance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Distance_Station1" Association="Self.FK_Distance_Station1">
+            <End Role="Station" EntitySet="Station" />
+            <End Role="Distance" EntitySet="Distance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flight_Train" Association="Self.FK_Flight_Train">
+            <End Role="Train" EntitySet="Train" />
+            <End Role="Flight" EntitySet="Flight" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RailwayCarriage_Flight" Association="Self.FK_RailwayCarriage_Flight">
+            <End Role="Flight" EntitySet="Flight" />
+            <End Role="RailwayCarriage" EntitySet="RailwayCarriage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RailwayCarriage_TypeRailwayCarriage" Association="Self.FK_RailwayCarriage_TypeRailwayCarriage">
+            <End Role="TypeRailwayCarriage" EntitySet="TypeRailwayCarriage" />
+            <End Role="RailwayCarriage" EntitySet="RailwayCarriage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Route_Flight" Association="Self.FK_Route_Flight">
+            <End Role="Flight" EntitySet="Flight" />
+            <End Role="Route" EntitySet="Route" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Route_Station" Association="Self.FK_Route_Station">
+            <End Role="Station" EntitySet="Station" />
+            <End Role="Route" EntitySet="Route" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seat_RailwayCarriage" Association="Self.FK_Seat_RailwayCarriage">
+            <End Role="RailwayCarriage" EntitySet="RailwayCarriage" />
+            <End Role="Seat" EntitySet="Seat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Passenger" Association="Self.FK_Ticket_Passenger">
+            <End Role="Passenger" EntitySet="Passenger" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Seat" Association="Self.FK_Ticket_Seat">
+            <End Role="Seat" EntitySet="Seat" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Station" Association="Self.FK_Ticket_Station">
+            <End Role="Station" EntitySet="Station" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Station1" Association="Self.FK_Ticket_Station1">
+            <End Role="Station" EntitySet="Station" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Train" Association="Self.FK_Ticket_Train">
+            <End Role="Train" EntitySet="Train" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Train_TypeTrain" Association="Self.FK_Train_TypeTrain">
+            <End Role="TypeTrain" EntitySet="TypeTrain" />
+            <End Role="Train" EntitySet="Train" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TrainTicketModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Distance">
+          <Key>
+            <PropertyRef Name="idStation_1" />
+            <PropertyRef Name="idStation_2" />
+          </Key>
+          <Property Name="Distance1" Type="Int32" Nullable="false" />
+          <Property Name="idStation_1" Type="Int32" Nullable="false" />
+          <Property Name="idStation_2" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Station" Relationship="Self.FK_Distance_Station" FromRole="Distance" ToRole="Station" />
+          <NavigationProperty Name="Station1" Relationship="Self.FK_Distance_Station1" FromRole="Distance" ToRole="Station" />
+        </EntityType>
+        <EntityType Name="Flight">
+          <Key>
+            <PropertyRef Name="NumFlight" />
+          </Key>
+          <Property Name="NumFlight" Type="Int32" Nullable="false" />
+          <Property Name="NumTrain" Type="Int32" Nullable="false" />
+          <Property Name="DepartureDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Train" Relationship="Self.FK_Flight_Train" FromRole="Flight" ToRole="Train" />
+          <NavigationProperty Name="RailwayCarriage" Relationship="Self.FK_RailwayCarriage_Flight" FromRole="Flight" ToRole="RailwayCarriage" />
+          <NavigationProperty Name="Route" Relationship="Self.FK_Route_Flight" FromRole="Flight" ToRole="Route" />
+        </EntityType>
+        <EntityType Name="Passenger">
+          <Key>
+            <PropertyRef Name="idPassenger" />
+          </Key>
+          <Property Name="idPassenger" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Passport" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ticket" Relationship="Self.FK_Ticket_Passenger" FromRole="Passenger" ToRole="Ticket" />
+        </EntityType>
+        <EntityType Name="RailwayCarriage">
+          <Key>
+            <PropertyRef Name="NumRailwayCarriage" />
+            <PropertyRef Name="NumFlight" />
+          </Key>
+          <Property Name="NumRailwayCarriage" Type="Int32" Nullable="false" />
+          <Property Name="NumFlight" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Flight" Relationship="Self.FK_RailwayCarriage_Flight" FromRole="RailwayCarriage" ToRole="Flight" />
+          <NavigationProperty Name="TypeRailwayCarriage" Relationship="Self.FK_RailwayCarriage_TypeRailwayCarriage" FromRole="RailwayCarriage" ToRole="TypeRailwayCarriage" />
+          <NavigationProperty Name="Seat" Relationship="Self.FK_Seat_RailwayCarriage" FromRole="RailwayCarriage" ToRole="Seat" />
+        </EntityType>
+        <EntityType Name="Route">
+          <Key>
+            <PropertyRef Name="idStation" />
+            <PropertyRef Name="NumFlight" />
+          </Key>
+          <Property Name="idStation" Type="Int32" Nullable="false" />
+          <Property Name="NumFlight" Type="Int32" Nullable="false" />
+          <Property Name="NumberInRoute" Type="Int32" Nullable="false" />
+          <Property Name="StopDuration" Type="Time" Precision="7" />
+          <NavigationProperty Name="Flight" Relationship="Self.FK_Route_Flight" FromRole="Route" ToRole="Flight" />
+          <NavigationProperty Name="Station" Relationship="Self.FK_Route_Station" FromRole="Route" ToRole="Station" />
+        </EntityType>
+        <EntityType Name="Seat">
+          <Key>
+            <PropertyRef Name="NumSeat" />
+            <PropertyRef Name="NumRailwayCarriage" />
+            <PropertyRef Name="NumFlight" />
+          </Key>
+          <Property Name="NumSeat" Type="Int32" Nullable="false" />
+          <Property Name="NumRailwayCarriage" Type="Int32" Nullable="false" />
+          <Property Name="NumFlight" Type="Int32" Nullable="false" />
+          <Property Name="Upper" Type="Boolean" />
+          <Property Name="Side" Type="Boolean" />
+          <Property Name="Sold" Type="Boolean" />
+          <NavigationProperty Name="RailwayCarriage" Relationship="Self.FK_Seat_RailwayCarriage" FromRole="Seat" ToRole="RailwayCarriage" />
+          <NavigationProperty Name="Ticket" Relationship="Self.FK_Ticket_Seat" FromRole="Seat" ToRole="Ticket" />
+        </EntityType>
+        <EntityType Name="Station">
+          <Key>
+            <PropertyRef Name="idStation" />
+          </Key>
+          <Property Name="idStation" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Distance" Relationship="Self.FK_Distance_Station" FromRole="Station" ToRole="Distance" />
+          <NavigationProperty Name="Distance1" Relationship="Self.FK_Distance_Station1" FromRole="Station" ToRole="Distance" />
+          <NavigationProperty Name="Route" Relationship="Self.FK_Route_Station" FromRole="Station" ToRole="Route" />
+          <NavigationProperty Name="Ticket" Relationship="Self.FK_Ticket_Station" FromRole="Station" ToRole="Ticket" />
+          <NavigationProperty Name="Ticket1" Relationship="Self.FK_Ticket_Station1" FromRole="Station" ToRole="Ticket" />
+        </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="idTicket" />
+          </Key>
+          <Property Name="idTicket" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="DepartureDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ArrivalDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="idDepartureStation" Type="Int32" Nullable="false" />
+          <Property Name="idArrivalStation" Type="Int32" Nullable="false" />
+          <Property Name="idPassenger" Type="Int32" Nullable="false" />
+          <Property Name="NumTrain" Type="Int32" Nullable="false" />
+          <Property Name="NumFlight" Type="Int32" Nullable="false" />
+          <Property Name="NumRailwayCarrige" Type="Int32" Nullable="false" />
+          <Property Name="NumSeat" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Passenger" Relationship="Self.FK_Ticket_Passenger" FromRole="Ticket" ToRole="Passenger" />
+          <NavigationProperty Name="Seat" Relationship="Self.FK_Ticket_Seat" FromRole="Ticket" ToRole="Seat" />
+          <NavigationProperty Name="Station" Relationship="Self.FK_Ticket_Station" FromRole="Ticket" ToRole="Station" />
+          <NavigationProperty Name="Station1" Relationship="Self.FK_Ticket_Station1" FromRole="Ticket" ToRole="Station" />
+          <NavigationProperty Name="Train" Relationship="Self.FK_Ticket_Train" FromRole="Ticket" ToRole="Train" />
+        </EntityType>
+        <EntityType Name="Train">
+          <Key>
+            <PropertyRef Name="NumTrain" />
+          </Key>
+          <Property Name="NumTrain" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Flight" Relationship="Self.FK_Flight_Train" FromRole="Train" ToRole="Flight" />
+          <NavigationProperty Name="Ticket" Relationship="Self.FK_Ticket_Train" FromRole="Train" ToRole="Ticket" />
+          <NavigationProperty Name="TypeTrain" Relationship="Self.FK_Train_TypeTrain" FromRole="Train" ToRole="TypeTrain" />
+        </EntityType>
+        <EntityType Name="TypeRailwayCarriage">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NumberOfSeats" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RailwayCarriage" Relationship="Self.FK_RailwayCarriage_TypeRailwayCarriage" FromRole="TypeRailwayCarriage" ToRole="RailwayCarriage" />
+        </EntityType>
+        <EntityType Name="TypeTrain">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AverageSpeed" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Train" Relationship="Self.FK_Train_TypeTrain" FromRole="TypeTrain" ToRole="Train" />
+        </EntityType>
+        <Association Name="FK_Distance_Station">
+          <End Role="Station" Type="Self.Station" Multiplicity="1" />
+          <End Role="Distance" Type="Self.Distance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="idStation" />
+            </Principal>
+            <Dependent Role="Distance">
+              <PropertyRef Name="idStation_1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Distance_Station1">
+          <End Role="Station" Type="Self.Station" Multiplicity="1" />
+          <End Role="Distance" Type="Self.Distance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="idStation" />
+            </Principal>
+            <Dependent Role="Distance">
+              <PropertyRef Name="idStation_2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flight_Train">
+          <End Role="Train" Type="Self.Train" Multiplicity="1" />
+          <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Train">
+              <PropertyRef Name="NumTrain" />
+            </Principal>
+            <Dependent Role="Flight">
+              <PropertyRef Name="NumTrain" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RailwayCarriage_Flight">
+          <End Role="Flight" Type="Self.Flight" Multiplicity="1" />
+          <End Role="RailwayCarriage" Type="Self.RailwayCarriage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flight">
+              <PropertyRef Name="NumFlight" />
+            </Principal>
+            <Dependent Role="RailwayCarriage">
+              <PropertyRef Name="NumFlight" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Route_Flight">
+          <End Role="Flight" Type="Self.Flight" Multiplicity="1" />
+          <End Role="Route" Type="Self.Route" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flight">
+              <PropertyRef Name="NumFlight" />
+            </Principal>
+            <Dependent Role="Route">
+              <PropertyRef Name="NumFlight" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Passenger">
+          <End Role="Passenger" Type="Self.Passenger" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Passenger">
+              <PropertyRef Name="idPassenger" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="idPassenger" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RailwayCarriage_TypeRailwayCarriage">
+          <End Role="TypeRailwayCarriage" Type="Self.TypeRailwayCarriage" Multiplicity="1" />
+          <End Role="RailwayCarriage" Type="Self.RailwayCarriage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeRailwayCarriage">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="RailwayCarriage">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seat_RailwayCarriage">
+          <End Role="RailwayCarriage" Type="Self.RailwayCarriage" Multiplicity="1" />
+          <End Role="Seat" Type="Self.Seat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RailwayCarriage">
+              <PropertyRef Name="NumRailwayCarriage" />
+              <PropertyRef Name="NumFlight" />
+            </Principal>
+            <Dependent Role="Seat">
+              <PropertyRef Name="NumRailwayCarriage" />
+              <PropertyRef Name="NumFlight" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Route_Station">
+          <End Role="Station" Type="Self.Station" Multiplicity="1" />
+          <End Role="Route" Type="Self.Route" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="idStation" />
+            </Principal>
+            <Dependent Role="Route">
+              <PropertyRef Name="idStation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Seat">
+          <End Role="Seat" Type="Self.Seat" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seat">
+              <PropertyRef Name="NumSeat" />
+              <PropertyRef Name="NumRailwayCarriage" />
+              <PropertyRef Name="NumFlight" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="NumSeat" />
+              <PropertyRef Name="NumRailwayCarrige" />
+              <PropertyRef Name="NumFlight" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Station">
+          <End Role="Station" Type="Self.Station" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="idStation" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="idDepartureStation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Station1">
+          <End Role="Station" Type="Self.Station" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="idStation" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="idArrivalStation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Train">
+          <End Role="Train" Type="Self.Train" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Train">
+              <PropertyRef Name="NumTrain" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="NumTrain" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Train_TypeTrain">
+          <End Role="TypeTrain" Type="Self.TypeTrain" Multiplicity="1" />
+          <End Role="Train" Type="Self.Train" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeTrain">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Train">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TrainTicketEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Distance" EntityType="Self.Distance" />
+          <EntitySet Name="Flight" EntityType="Self.Flight" />
+          <EntitySet Name="Passenger" EntityType="Self.Passenger" />
+          <EntitySet Name="RailwayCarriage" EntityType="Self.RailwayCarriage" />
+          <EntitySet Name="Route" EntityType="Self.Route" />
+          <EntitySet Name="Seat" EntityType="Self.Seat" />
+          <EntitySet Name="Station" EntityType="Self.Station" />
+          <EntitySet Name="Ticket" EntityType="Self.Ticket" />
+          <EntitySet Name="Train" EntityType="Self.Train" />
+          <EntitySet Name="TypeRailwayCarriage" EntityType="Self.TypeRailwayCarriage" />
+          <EntitySet Name="TypeTrain" EntityType="Self.TypeTrain" />
+          <AssociationSet Name="FK_Distance_Station" Association="Self.FK_Distance_Station">
+            <End Role="Station" EntitySet="Station" />
+            <End Role="Distance" EntitySet="Distance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Distance_Station1" Association="Self.FK_Distance_Station1">
+            <End Role="Station" EntitySet="Station" />
+            <End Role="Distance" EntitySet="Distance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flight_Train" Association="Self.FK_Flight_Train">
+            <End Role="Train" EntitySet="Train" />
+            <End Role="Flight" EntitySet="Flight" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RailwayCarriage_Flight" Association="Self.FK_RailwayCarriage_Flight">
+            <End Role="Flight" EntitySet="Flight" />
+            <End Role="RailwayCarriage" EntitySet="RailwayCarriage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Route_Flight" Association="Self.FK_Route_Flight">
+            <End Role="Flight" EntitySet="Flight" />
+            <End Role="Route" EntitySet="Route" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Passenger" Association="Self.FK_Ticket_Passenger">
+            <End Role="Passenger" EntitySet="Passenger" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RailwayCarriage_TypeRailwayCarriage" Association="Self.FK_RailwayCarriage_TypeRailwayCarriage">
+            <End Role="TypeRailwayCarriage" EntitySet="TypeRailwayCarriage" />
+            <End Role="RailwayCarriage" EntitySet="RailwayCarriage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seat_RailwayCarriage" Association="Self.FK_Seat_RailwayCarriage">
+            <End Role="RailwayCarriage" EntitySet="RailwayCarriage" />
+            <End Role="Seat" EntitySet="Seat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Route_Station" Association="Self.FK_Route_Station">
+            <End Role="Station" EntitySet="Station" />
+            <End Role="Route" EntitySet="Route" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Seat" Association="Self.FK_Ticket_Seat">
+            <End Role="Seat" EntitySet="Seat" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Station" Association="Self.FK_Ticket_Station">
+            <End Role="Station" EntitySet="Station" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Station1" Association="Self.FK_Ticket_Station1">
+            <End Role="Station" EntitySet="Station" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Train" Association="Self.FK_Ticket_Train">
+            <End Role="Train" EntitySet="Train" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Train_TypeTrain" Association="Self.FK_Train_TypeTrain">
+            <End Role="TypeTrain" EntitySet="TypeTrain" />
+            <End Role="Train" EntitySet="Train" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище TrainTicketModelContainer" CdmEntityContainer="TrainTicketEntities">
+          <EntitySetMapping Name="Distance">
+            <EntityTypeMapping TypeName="TrainTicketModel.Distance">
+              <MappingFragment StoreEntitySet="Distance">
+                <ScalarProperty Name="Distance1" ColumnName="Distance" />
+                <ScalarProperty Name="idStation_1" ColumnName="idStation_1" />
+                <ScalarProperty Name="idStation_2" ColumnName="idStation_2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Flight">
+            <EntityTypeMapping TypeName="TrainTicketModel.Flight">
+              <MappingFragment StoreEntitySet="Flight">
+                <ScalarProperty Name="NumFlight" ColumnName="NumFlight" />
+                <ScalarProperty Name="NumTrain" ColumnName="NumTrain" />
+                <ScalarProperty Name="DepartureDateTime" ColumnName="DepartureDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Passenger">
+            <EntityTypeMapping TypeName="TrainTicketModel.Passenger">
+              <MappingFragment StoreEntitySet="Passenger">
+                <ScalarProperty Name="idPassenger" ColumnName="idPassenger" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="Passport" ColumnName="Passport" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RailwayCarriage">
+            <EntityTypeMapping TypeName="TrainTicketModel.RailwayCarriage">
+              <MappingFragment StoreEntitySet="RailwayCarriage">
+                <ScalarProperty Name="NumRailwayCarriage" ColumnName="NumRailwayCarriage" />
+                <ScalarProperty Name="NumFlight" ColumnName="NumFlight" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Route">
+            <EntityTypeMapping TypeName="TrainTicketModel.Route">
+              <MappingFragment StoreEntitySet="Route">
+                <ScalarProperty Name="idStation" ColumnName="idStation" />
+                <ScalarProperty Name="NumFlight" ColumnName="NumFlight" />
+                <ScalarProperty Name="NumberInRoute" ColumnName="NumberInRoute" />
+                <ScalarProperty Name="StopDuration" ColumnName="StopDuration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seat">
+            <EntityTypeMapping TypeName="TrainTicketModel.Seat">
+              <MappingFragment StoreEntitySet="Seat">
+                <ScalarProperty Name="NumSeat" ColumnName="NumSeat" />
+                <ScalarProperty Name="NumRailwayCarriage" ColumnName="NumRailwayCarriage" />
+                <ScalarProperty Name="NumFlight" ColumnName="NumFlight" />
+                <ScalarProperty Name="Upper" ColumnName="Upper" />
+                <ScalarProperty Name="Side" ColumnName="Side" />
+                <ScalarProperty Name="Sold" ColumnName="Sold" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Station">
+            <EntityTypeMapping TypeName="TrainTicketModel.Station">
+              <MappingFragment StoreEntitySet="Station">
+                <ScalarProperty Name="idStation" ColumnName="idStation" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ticket">
+            <EntityTypeMapping TypeName="TrainTicketModel.Ticket">
+              <MappingFragment StoreEntitySet="Ticket">
+                <ScalarProperty Name="idTicket" ColumnName="idTicket" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="DepartureDateTime" ColumnName="DepartureDateTime" />
+                <ScalarProperty Name="ArrivalDateTime" ColumnName="ArrivalDateTime" />
+                <ScalarProperty Name="idDepartureStation" ColumnName="idDepartureStation" />
+                <ScalarProperty Name="idArrivalStation" ColumnName="idArrivalStation" />
+                <ScalarProperty Name="idPassenger" ColumnName="idPassenger" />
+                <ScalarProperty Name="NumTrain" ColumnName="NumTrain" />
+                <ScalarProperty Name="NumFlight" ColumnName="NumFlight" />
+                <ScalarProperty Name="NumRailwayCarrige" ColumnName="NumRailwayCarrige" />
+                <ScalarProperty Name="NumSeat" ColumnName="NumSeat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Train">
+            <EntityTypeMapping TypeName="TrainTicketModel.Train">
+              <MappingFragment StoreEntitySet="Train">
+                <ScalarProperty Name="NumTrain" ColumnName="NumTrain" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypeRailwayCarriage">
+            <EntityTypeMapping TypeName="TrainTicketModel.TypeRailwayCarriage">
+              <MappingFragment StoreEntitySet="TypeRailwayCarriage">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="NumberOfSeats" ColumnName="NumberOfSeats" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypeTrain">
+            <EntityTypeMapping TypeName="TrainTicketModel.TypeTrain">
+              <MappingFragment StoreEntitySet="TypeTrain">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AverageSpeed" ColumnName="AverageSpeed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
