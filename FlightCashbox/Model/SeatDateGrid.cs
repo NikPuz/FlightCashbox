@@ -15,5 +15,7 @@ namespace MVVM
         public int NumSeat { get; set; }
         public int NumRailwayCarriage { get; set; }
         public int NumFlight { get; set; }
+        public int Price { get; set; }
+
     }
 }

@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FlightCashbox"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="550" Width="800">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="MinWidth" Value="35" />
             <Setter Property="MinHeight" Value="15" />
-            <Setter Property="Margin" Value="5,3,5,3" />
+            <Setter Property="Margin" Value="5,5,5,5" />
             <Setter Property="Padding" Value="5,3,5,5" />
         </Style>
         <Style TargetType="TextBox">
-            <Setter Property="MinWidth" Value="10" />
+            <Setter Property="MinWidth" Value="100" />
             <Setter Property="Margin" Value="5,2,5,2" />
         </Style>
         <Style TargetType="TextBlock">
@@ -37,8 +37,10 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel>
+
+        <StackPanel >
             <TextBlock>Станция посадки:</TextBlock>
             <ComboBox Width="100" ItemsSource="{Binding StationName}" SelectedItem="{Binding SelectedDepartureStationName, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
             <TextBlock>Станция прибытия:</TextBlock>
@@ -51,22 +53,7 @@
             <CheckBox IsChecked="{Binding CheckBoxSideSeat, UpdateSourceTrigger=PropertyChanged}" Height="20" Content="Без боковых мест" />
             <Button Command="{Binding Sort}" Content="Отсортировать"></Button>
             <Button Command="{Binding ResetSort}" Content="Сбросить"></Button>
-            </StackPanel>
-        <GroupBox Header="Выбрать" Margin="5,5,5,5" VerticalAlignment="Bottom">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock>Рейс №:</TextBlock>
-                        <ComboBox Width="50" ItemsSource="{Binding FlightNumberList}" SelectedItem="{Binding SelectedNumberFlight, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock>Вагон №:</TextBlock>
-                        <ComboBox Width="50" ItemsSource="{Binding TypeRailwayCarriageNumberList}" SelectedItem="{Binding SelectedNumberRailwayCarriage, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
-                    </StackPanel>
-                </StackPanel>
-                <Button Command="{Binding ResetSelection}" Content="Сбросить"></Button>
-            </StackPanel>
-        </GroupBox>
+        </StackPanel>
         <DataGrid AutoGenerateColumns="False" Grid.Column="1" CanUserAddRows="False" ItemsSource="{Binding SeatDateGrid}" SelectedItem="{Binding SelectedSeat}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Место №" Binding="{Binding Path=NumSeat}"></DataGridTextColumn>
@@ -74,9 +61,21 @@
                 <DataGridTextColumn Header="Рейс №" Binding="{Binding Path=NumFlight}"></DataGridTextColumn>
                 <DataGridCheckBoxColumn Header="Верхнее" Binding="{Binding Path=Upper}"></DataGridCheckBoxColumn>
                 <DataGridCheckBoxColumn Header="Боковое" Binding="{Binding Path=Side}"></DataGridCheckBoxColumn>
-                <DataGridTextColumn Header="Поезда" Binding="{Binding Path=TypeTrain}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Вагон" Binding="{Binding Path=TypeRailwayCarriage}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Тип Поезда" Binding="{Binding Path=TypeTrain}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Тип Вагона" Binding="{Binding Path=TypeRailwayCarriage}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Цена" Width="*" Binding="{Binding Path=Price}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <StackPanel Grid.Column="2">
+            <TextBlock>Имя:</TextBlock>
+            <TextBox Text="{Binding TBName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBlock>Фамилия:</TextBlock>
+            <TextBox Text="{Binding TBSurname, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBlock>Отчество:</TextBlock>
+            <TextBox Text="{Binding TBPatronymic, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBlock>Н\С паспорта:</TextBlock>
+            <TextBox Text="{Binding TBPassport, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <Button Command="{Binding Sell}" Content="Продать"></Button>
+        </StackPanel>
     </Grid>
 </Window>
